@@ -49,9 +49,9 @@ hook.Add(
 		end
 		if not is_protected then return end
 
-		if
-			CurTime() <= target:GetNW2Float("OneShotProtection_InvulnTime", 0.0)
-		then
+		if CurTime() <= target:GetNW2Float(
+			"OneShotProtection_InvulnExpireTime", 0.0
+		) then
 			return true
 		end
 
@@ -92,7 +92,7 @@ hook.Add(
 
 		local result = hook_Run(
 			"OneShotProtection_DoProtect",
-			dmg_info, health, health_protected
+			dmg_info, health, health_protected, health_max, target
 		)
 		if result == nil then
 			if (health - dmg_info:GetDamage()) < health_protected then
@@ -108,14 +108,14 @@ hook.Add(
 		end
 
 		local invuln_time = tonumber((hook_Run(
-			"OneShotProtection_CalcInvulnTime",
+			"OneShotProtection_CalcInvulnExpireTime",
 			target, dmg_info, health, health_max, health_protected
 		)))
 		if not invuln_time then
 			invuln_time = CurTime() + mp_one_shot_invuln_period:GetFloat()
 		end
 		target:SetNW2Float(
-			"OneShotProtection_InvulnTime",
+			"OneShotProtection_InvulnExpireTime",
 			invuln_time
 		)
 
