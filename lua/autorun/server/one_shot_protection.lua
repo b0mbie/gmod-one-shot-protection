@@ -25,6 +25,12 @@ local mp_one_shot_health_threshold = CreateConVar(
 	"Multiplier of the maximum effective health which dictates the minimum amount required for one-shot protection.",
 	0, nil
 )
+local mp_one_shot_use_armor_max = CreateConVar(
+	"mp_one_shot_use_armor_max", "0",
+	bit.bor(FCVAR_REPLICATED),
+	"Add max player armor to their effective health.",
+	0, 1
+)
 local mp_one_shot_health_protected = CreateConVar(
 	"mp_one_shot_health_protected", "0.2",
 	bit.bor(FCVAR_REPLICATED, FCVAR_NOTIFY),
@@ -64,7 +70,10 @@ hook.Add(
 			if target:IsPlayer() then
 				local armor_multiplier = player_old_armor:GetBool() and 2 or 1
 				health = health + target:Armor() * armor_multiplier
-				health_max = health_max + target:GetMaxArmor() * armor_multiplier
+				if mp_one_shot_use_armor_max:GetBool() then
+					health_max =
+						health_max + target:GetMaxArmor() * armor_multiplier
+				end
 			end
 		end
 
