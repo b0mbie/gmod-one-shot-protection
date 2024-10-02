@@ -40,11 +40,6 @@ hook.Add(
 	--- @param dmg_info CTakeDamageInfo
 	function (target, dmg_info)
 		if not mp_one_shot_protection:GetBool() then return end
-		if
-			CurTime() <= target:GetNW2Float("OneShotProtection_InvulnTime", 0.0)
-		then
-			return true
-		end
 
 		local is_protected = hook_Run(
 			"OneShotProtection_IsProtected", target, dmg_info
@@ -53,6 +48,12 @@ hook.Add(
 			is_protected = target:IsPlayer()
 		end
 		if not is_protected then return end
+
+		if
+			CurTime() <= target:GetNW2Float("OneShotProtection_InvulnTime", 0.0)
+		then
+			return true
+		end
 
 		local health, health_max = hook_Run(
 			"OneShotProtection_CalcEffectiveHealth", target
