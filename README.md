@@ -11,7 +11,7 @@ A lot of the addon's behavior can be modified with [hooks](#hooks) in Lua.
 # Console variables
 To set a console variable, simply type `console_variable_name "variable_value"`
 in the console, or create a `.cfg` file in the `garrysmod/cfg` directory.
-A list of ones provided by the addon follows.
+A list of ConVars provided by the addon follows.
 ## `mp_one_shot_protection`
 `1` enables the mechanic, `0` disables it.
 ## `mp_one_shot_invuln_period`
@@ -27,7 +27,8 @@ will be left for something after it has been protected from a one-shot kill.
 # Hooks
 To not make the addon an unmodifiable monolith at run-time, some custom hooks
 can be used in order to customize its behavior.
-A list of hooks provided by the addon follows.
+A list of hooks provided by the addon, along with their pseudo-signatures,
+follows.
 ## `OneShotProtection_IsProtected`
 ```
 IsProtected(target: Entity, dmg_info: CTakeDamageInfo) -> boolean?
