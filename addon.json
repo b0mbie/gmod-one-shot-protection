@@ -1,0 +1,9 @@
+{
+	"title": "One-Shot Protection",
+	"type": "ServerContent",
+	"tags": ["fun", "roleplay"],
+	"ignore": [
+		"*.md",
+		".vscode"
+	]
+}
