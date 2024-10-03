@@ -3,9 +3,12 @@ One-Shot Protection, written by [aka]bomb.
 Kindly see the README.
 ]]
 
+local bit_band = bit.band
 local hook_Run = hook.Run
 local math_max = math.max
 local tonumber = tonumber
+
+local DMG_BYPASS_ARMOR = bit.bor(DMG_FALL, DMG_DROWN, DMG_POISON, DMG_RADIATION)
 
 local mp_one_shot_protection = CreateConVar(
 	"mp_one_shot_protection", "1",
@@ -25,10 +28,10 @@ local mp_one_shot_health_threshold = CreateConVar(
 	"Multiplier of the maximum effective health which dictates the minimum amount required for one-shot protection.",
 	0, nil
 )
-local mp_one_shot_use_armor_max = CreateConVar(
-	"mp_one_shot_use_armor_max", "0",
+local mp_one_shot_check_armor = CreateConVar(
+	"mp_one_shot_check_armor", "0",
 	bit.bor(FCVAR_REPLICATED),
-	"Add max player armor to their effective health.",
+	"Add player armor to their effective health.",
 	0, 1
 )
 local mp_one_shot_health_protected = CreateConVar(
@@ -68,11 +71,16 @@ hook.Add(
 		if not (health and health_max) then
 			health, health_max = target:Health(), target:GetMaxHealth()
 			if target:IsPlayer() then
-				local armor_multiplier = player_old_armor:GetBool() and 2 or 1
-				health = health + target:Armor() * armor_multiplier
-				if mp_one_shot_use_armor_max:GetBool() then
-					health_max =
-						health_max + target:GetMaxArmor() * armor_multiplier
+				if mp_one_shot_check_armor:GetBool() then
+					-- Do armor calculation iff the damage doesn't bypass armor.
+					if bit_band(
+						dmg_info:GetDamageType(), DMG_BYPASS_ARMOR
+					) == 0 then
+						local armor_multiplier = player_old_armor:GetBool() and 2 or 1
+						health = health + target:Armor() * armor_multiplier
+						health_max =
+							health_max + target:GetMaxArmor() * armor_multiplier
+					end
 				end
 			end
 		end
