@@ -4,6 +4,6 @@
 	"tags": ["fun", "roleplay"],
 	"ignore": [
 		"*.md",
-		".vscode"
+		"*.json"
 	]
 }
