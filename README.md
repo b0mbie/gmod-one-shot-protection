@@ -17,6 +17,9 @@ A list of ConVars provided by the addon follows.
 ## `mp_one_shot_invuln_period`
 Numeric value indicates the period in seconds of invulnerability after a
 one-shot protection.
+## `mp_one_shot_check_armor`
+`1` enables adding players' armor to calculate their effective health, `0`
+disables it.
 ## `mp_one_shot_health_threshold`
 Numeric value indicates the multiplier of the effective maximum health above
 which something is eligible for one-shot protection.
